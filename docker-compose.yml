@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:14
+    container_name: postgres                  # THIS VALUE REPRESENT HOST DATABASE AND MUST BE THE SAME AS THE ENVIRONMENT IN ALL SERVICES
+    restart: always
+    environment:
+      POSTGRES_USER: mnc-user                 # THE VALUE MUST BE THE SAME AS THE ENVIRONMENT IN ALL SERVICES
+      POSTGRES_PASSWORD: mnc-pass             # THE VALUE MUST BE THE SAME AS THE ENVIRONMENT IN ALL SERVICES
+      POSTGRES_DB: mnc                        # THE VALUE MUST BE THE SAME AS THE ENVIRONMENT IN ALL SERVICES
+    ports:
+      - "5432:5432"                           # THE VALUE MUST BE THE SAME AS THE ENVIRONMENT IN ALL SERVICES
+    volumes:
+      - mnc_postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mnc-user -d mnc"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  mnc-users:
+    build:
+      context: ./mnc-users
+    container_name: mnc-users
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - ./mnc-users/.env
+    networks:
+      - app-network
+
+
+volumes:
+  mnc_postgres_data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
