@@ -52,7 +52,7 @@ docker-compose up -d
 ```
 
 
-## RUN MIGRATIONS
+## RUN MIGRATIONS (IF USING DOCKER DATABASES)
 Once docker container is ready, you need to run migrations
 
 ### Step 1: Get in to mnc-users container
