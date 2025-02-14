@@ -8,6 +8,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"mnc-users/apps/databases/repositories"
 	"mnc-users/apps/users/dto"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserService struct {
@@ -68,8 +69,12 @@ func generateToken(userID string, secret string, expiry time.Duration) (string, 
 
 func (s *UserService) Login(phoneNumber, pin string) (string, string, error) {
 	user, err := s.Repo.FindByPhoneNumber(phoneNumber)
-	if err != nil || user.PIN != pin {
-		return "", "", errors.New("Phone Number and PIN doesn’t match.")
+	if err != nil {
+		return "", "", errors.New("Phone number not found")
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.PIN), []byte(pin)); err != nil {
+		return "", "", errors.New("Phone number and PIN doesn’t match")
 	}
 
 	accessSecret := os.Getenv("JWT_SECRET")

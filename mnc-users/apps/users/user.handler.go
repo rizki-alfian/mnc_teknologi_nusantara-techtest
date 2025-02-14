@@ -5,7 +5,6 @@ import (
 	"mnc-users/apps/users/dto"
 
 	"github.com/labstack/echo/v4"
-	"fmt"
 )
 
 type UserHandler struct {
@@ -55,7 +54,6 @@ func (h *UserHandler) Login(c echo.Context) error {
 
 func (h *UserHandler) UpdateProfile(c echo.Context) error {
 	userID := c.Get("user_id").(string)
-    fmt.Println("userID,", userID)
 
 	var req dto.UpdateProfileRequest
 	if err := c.Bind(&req); err != nil {

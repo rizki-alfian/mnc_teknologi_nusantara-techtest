@@ -4,7 +4,7 @@ CREATE TABLE users (
     last_name VARCHAR(100) NOT NULL,
     phone_number VARCHAR(20) UNIQUE NOT NULL,
     address TEXT,
-    pin CHAR(6) NOT NULL,
+    pin TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT NULL,
     deleted_at TIMESTAMP

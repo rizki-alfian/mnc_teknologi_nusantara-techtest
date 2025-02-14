@@ -15,7 +15,9 @@ Before you begin, ensure you have the following installed and set up:
 
 ### Step 1: Configure the `service` Settings
 
-- Open the `docker-compose.yml` file and modify the `container_name` and `environment` values as per folder services.
+- Open the `docker-compose.yml` file.
+- If databases using docker, then modify the `container_name` and `environment` values as per folder services.
+- If databases using sql file, then comment service `postgres`
 
 ### Step 2: Copy Environment Files
 
@@ -27,12 +29,19 @@ Before you begin, ensure you have the following installed and set up:
 
 In `.env` file, update the values for the environment variables according to the following instructions:
 
+#### IF DATABASES USING DOCKER, FOLLOW THIS STEP
 - **DB_HOST**: Set this based on `container_name` found in `docker-compose.yml`.
 - **DB_PORT**: Set this based on `ports` found in `docker-compose.yml`.
 - **DB_USER**: Set this to the value of `POSTGRES_USER` from the Postgres service environment.
 - **DB_PASS**: Set this to the value of `POSTGRES_PASSWORD` from the Postgres service environment.
 - **DB_NAME**: Set this to the value of `POSTGRES_DB` from the Postgres service environment.
 
+#### IF DATABASES USING SQL FILE, FOLLOW THIS STEP
+- **DB_HOST**: Set this to localhost.
+- **DB_PORT**: Set this to your localhost database port.
+- **DB_USER**: Set this to your localhost database username.
+- **DB_PASS**: Set this to your localhost database password.
+- **DB_NAME**: Set this to your localhost database name.
 
 ## Running the Project
 

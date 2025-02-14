@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 	"time"
 	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserRepository struct {
@@ -16,17 +17,23 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 }
 
 func (r *UserRepository) Create(firstName, lastName, phoneNumber, address, pin string) (string, string, error) {
+
+	hashedPin, err := bcrypt.GenerateFromPassword([]byte(pin), bcrypt.DefaultCost)
+	if err != nil {
+		return "", "", err
+	}
+
 	user := models.Users{
 		ID:          uuid.New(),
 		FirstName:   firstName,
 		LastName:    lastName,
 		PhoneNumber: phoneNumber,
 		Address:     address,
-		PIN:         pin,
+		PIN:         string(hashedPin),
 		CreatedAt:   time.Now(),
 	}
 
-	err := r.db.Create(&user).Error
+	err = r.db.Create(&user).Error
 	if err != nil {
 		return "", "", err
 	}

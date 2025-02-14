@@ -10,4 +10,5 @@ func SetupRoutes(e *echo.Echo, di *container.Container) {
 
 	Test1Routes(api, di.Test1Handler)
 	UserRoutes(api, di.UserHandler)
+	TransactionRoutes(api, di.TransactionHandler)
 }
